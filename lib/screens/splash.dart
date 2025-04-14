@@ -20,28 +20,32 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // App logo can be added here
-            const Icon(Icons.restaurant, size: 100, color: Colors.deepOrange),
-            const SizedBox(height: 20),
-            // App name
-            const Text(
-              'FlavorLens',
-              style: TextStyle(
-                fontSize: 34,
-                fontWeight: FontWeight.bold,
-                color: Colors.deepOrange,
+    return WillPopScope(
+      // Prevent back button from working on splash screen
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // App logo can be added here
+              const Icon(Icons.restaurant, size: 100, color: Colors.deepOrange),
+              const SizedBox(height: 20),
+              // App name
+              const Text(
+                'FlavorLens',
+                style: TextStyle(
+                  fontSize: 34,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.deepOrange,
+                ),
               ),
-            ),
-            const SizedBox(height: 30),
-            // Loading indicator
-            const CircularProgressIndicator(color: Colors.deepOrange),
-          ],
+              const SizedBox(height: 30),
+              // Loading indicator
+              const CircularProgressIndicator(color: Colors.deepOrange),
+            ],
+          ),
         ),
       ),
     );

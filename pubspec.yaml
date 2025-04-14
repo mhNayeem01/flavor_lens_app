@@ -48,12 +48,14 @@ dependencies:
   http: ^1.2.0
   
   # PDF generation (importing but not actively using to avoid build issues)
-  pdf: ^3.10.7
+  pdf: ^3.11.3
   printing: ^5.11.1
   
   # Audio recording for voice input (importing but not actively using to avoid build issues)
-  path_provider: ^2.1.2
+  path_provider: ^2.1.5
   record: ^5.0.4
+  open_file: ^3.5.10
+  fl_chart: ^0.70.2
 
 dev_dependencies:
   flutter_test:

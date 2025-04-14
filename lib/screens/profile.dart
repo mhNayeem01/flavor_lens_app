@@ -1,8 +1,10 @@
-
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import '../models/recipe.dart';
+import '../utils/app_theme.dart';
+import '../main.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -15,149 +17,304 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int _recipeCount = 0;
   List<Recipe> _recentRecipes = [];
   bool _isLoading = true;
-  
+
   @override
   void initState() {
     super.initState();
     _loadProfileData();
   }
-  
+
   Future<void> _loadProfileData() async {
     final prefs = await SharedPreferences.getInstance();
-    
+
     // Load recipe count
     final recipeCount = prefs.getInt('recipeCount') ?? 0;
-    
+
     // Load recent recipes
     final recipesJson = prefs.getStringList('recentRecipes') ?? [];
-    final recipes = recipesJson.map((json) => Recipe.fromJson(jsonDecode(json))).toList();
-    
+    final recipes =
+        recipesJson.map((json) => Recipe.fromJson(jsonDecode(json))).toList();
+
     setState(() {
       _recipeCount = recipeCount;
       _recentRecipes = recipes;
       _isLoading = false;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Your Profile'),
-        backgroundColor: Colors.deepOrange,
-        foregroundColor: Colors.white,
-      ),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // User info card
-                    Card(
-                      elevation: 4,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Column(
+      body:
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16.0, 24.0, 16.0, 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: AppTheme.primaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(
+                                Icons.person,
+                                color: AppTheme.primaryColor,
+                                size: 28,
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  'Your Profile',
+                                  style: AppTheme.headingLarge,
+                                ),
+                                Text(
+                                  'View your activity and saved recipes',
+                                  style: AppTheme.caption,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // User info card
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [
+                              AppTheme.primaryColor,
+                              AppTheme.primaryLight,
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppTheme.primaryColor.withOpacity(0.3),
+                              blurRadius: 12,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: Row(
                           children: [
                             const CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Colors.deepOrange,
+                              radius: 40,
+                              backgroundColor: Colors.white24,
                               child: Icon(
                                 Icons.person,
-                                size: 60,
+                                size: 50,
                                 color: Colors.white,
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            const Text(
-                              'FlavorLens User',
-                              style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Recipes Generated: $_recipeCount',
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
+                            const SizedBox(width: 20),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'FlavorLens User',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 6,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white24,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Text(
+                                      'Recipes: $_recipeCount',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                    
-                    const SizedBox(height: 32),
-                    
-                    // Recent recipes
-                    const Text(
-                      'Your Recent Recipes',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+
+                      const SizedBox(height: 30),
+
+                      // Recent recipes
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                width: 4,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  color: AppTheme.accentColor,
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Recent Recipes',
+                                style: AppTheme.headingMedium,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            '${_recentRecipes.length} items',
+                            style: TextStyle(
+                              color: AppTheme.textSecondary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    if (_recentRecipes.isEmpty)
-                      const Center(
-                        child: Text(
-                          'No recipes generated yet!',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
+                      const SizedBox(height: 16),
+
+                      if (_recentRecipes.isEmpty)
+                        Container(
+                          padding: const EdgeInsets.all(30),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[100],
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.grey[300]!),
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.restaurant_menu,
+                                  size: 60,
+                                  color: Colors.grey[400],
+                                ),
+                                const SizedBox(height: 16),
+                                Text(
+                                  'No recipes generated yet!',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  'Create your first recipe to see it here',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      else
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 10,
+                                spreadRadius: 0,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
+                          ),
+                          child: ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: _recentRecipes.length,
+                            separatorBuilder:
+                                (context, index) =>
+                                    Divider(color: Colors.grey[200], height: 1),
+                            itemBuilder: (context, index) {
+                              final recipe = _recentRecipes[index];
+                              return ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 8,
+                                ),
+                                title: Text(
+                                  recipe.title,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 4),
+                                  child: Text(
+                                    '${recipe.ingredients.length} ingredients • ${recipe.steps.length} steps',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                                leading: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.primaryColor.withOpacity(
+                                      0.1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Icon(
+                                    Icons.restaurant_menu,
+                                    color: AppTheme.primaryColor,
+                                    size: 24,
+                                  ),
+                                ),
+                                onTap: () {
+                                  // Use the app-wide state to share the selected recipe
+                                  final appState = Provider.of<AppState>(
+                                    context,
+                                    listen: false,
+                                  );
+                                  appState.setSelectedRecipe(recipe);
+
+                                  // Navigate to the Home tab (index 0)
+                                  Provider.of<TabNavigationState>(
+                                    context,
+                                    listen: false,
+                                  ).changeTab(0);
+                                },
+                              );
+                            },
                           ),
                         ),
-                      )
-                    else
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: _recentRecipes.length,
-                        itemBuilder: (context, index) {
-                          final recipe = _recentRecipes[index];
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 12),
-                            child: ListTile(
-                              title: Text(
-                                recipe.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              subtitle: Text(
-                                '${recipe.ingredients.length} ingredients • ${recipe.steps.length} steps',
-                              ),
-                              leading: Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.deepOrange.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: const Icon(
-                                  Icons.restaurant,
-                                  color: Colors.deepOrange,
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.pop(context);
-                                // Here you could navigate to the recipe details
-                                // or pass back the recipe to show on home screen
-                              },
-                            ),
-                          );
-                        },
-                      ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
     );
   }
 }
