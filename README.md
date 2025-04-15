@@ -60,8 +60,6 @@ This app leverages the **Gemini API** to generate creative recipes, analyze nutr
 | SharedPreferences     | Local Storage                             |
 | Gemini API            | AI Recipe, Meal Plan, and Nutrition Generation |
 | Image Picker          | Camera / Gallery Integration              |
-| Whisper API           | Voice Input Transcription                 |
-| Record                | Audio Recording                           |
 | Printing Package      | PDF Meal Plan Export                      |
 
 ---
