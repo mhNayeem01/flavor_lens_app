@@ -1,74 +1,106 @@
-# FlavorLens
+# 🍳 FlavorLens
 
-FlavorLens is a generative AI recipe & meal planner app built as a course project for Mobile Application Design Lab at Daffodil International University.
+**FlavorLens** is an AI-powered Recipe & Meal Planner app, developed as part of the **Mobile Application Design Lab** course at **Daffodil International University**.
 
-## Features
+This app leverages the **Gemini API** to generate creative recipes, analyze nutritional content (via **Calorie AI**), and deliver personalized weekly meal plans based on user preferences.
 
-1. **Splash Screen**
-   - Shows app logo and name for 2 seconds before navigating to the home screen
+---
 
-2. **Home Screen with Recipe Generation**
-   - Image Input: Take or select photos of ingredients/foods
-   - Voice Input: Record and transcribe requests for recipes
-   - Text Input: Type recipe requests directly
-   - Diet Filter: Choose from None, Keto, Halal, High-Protein, or Nutritious
-   - Generated recipes include title, ingredients, steps, nutrition info, and images
-   - Stores the last 5 recipes for quick access
+## 🚀 Features
 
-3. **Weekly Meal Planner**
-   - Form with diet filter and 5 MCQs for personalization
-   - Generates a 7-day meal plan with breakfast, lunch, and dinner
-   - Export as PDF functionality
+### ✅ Login / Sign-Up
+- Secure authentication for personalized access.
+- Firebase Authentication (Currently used mock signup and login; as it was showing errors)
 
-4. **Profile Screen**
-   - Shows number of recipes generated
-   - Lists previously generated recipe titles
+---
 
-5. **About Screen**
-   - App information and team details
+### ✅ Recipe Generation
+- 📸 **Image Input:** Snap or upload ingredient photos for recipe suggestions.
+- 🎙️ **Voice Input:** Speak your recipe request (powered by **Whisper** speech-to-text).
+- 💬 **Text Input:** Type ingredient names or custom requests.
+- ⚡ **Dietary Filters:** Choose from:
+  - None
+  - Keto
+  - Halal
+  - High-Protein
+  - Nutritious
+- 🍽️ **AI Output:**
+  - Auto-generated recipe title
+  - Ingredients
+  - Steps
+  - Nutrition info (visualized as a pie chart via **Calorie AI**)
+  - AI-generated recipe images
 
-## Setup Instructions
+---
 
-1. **Clone the repository**
-   ```
-   git clone https://github.com/yourusername/flavor_lens_app.git
-   cd flavor_lens_app
-   ```
+### ✅ Weekly Meal Planner
+- 🎯 Personalized 7-day meal plan based on selected dietary filters.
+- 🧠 Answer 10 MCQs to fine-tune AI meal suggestions.
+- 🗓️ Export your meal plan as a **PDF**.
 
-2. **Install dependencies**
-   ```
-   flutter pub get
-   ```
+---
 
-3. **Run the app**
-   ```
-   flutter run
-   ```
+### ✅ Profile Section
+- 📊 Tracks the total number of recipes generated.
+- 📝 Displays a list of previously generated recipe titles.
 
-## Tech Stack
+---
 
-- Flutter for UI
-- Provider for state management
-- SharedPreferences for local storage
-- GroqCloud API (Claude 3) for AI generation
-- Image Picker for camera/gallery access
-- Record for audio recording
-- PDF generation with printing package
+### ✅ About Section
+- ℹ️ App information and developer team credits.
 
-## Team
+---
 
-- Md Mehedi Hasan Nayeem — 221‑15‑5049
-- Md Mobashir Hasan — 221‑15‑5405
-- Tanvirul Islam — 221‑15‑5386
-- Azmira Shekh — 221‑15‑5569
-- Md. Jahid Hasan — 221‑15‑5388
+## 🧠 Tech Stack
 
-## Acknowledgments
+| Technology           | Usage                                      |
+|-----------------------|--------------------------------------------|
+| Flutter               | UI Development                            |
+| Provider              | State Management                          |
+| SharedPreferences     | Local Storage                             |
+| Gemini API            | AI Recipe, Meal Plan, and Nutrition Generation |
+| Image Picker          | Camera / Gallery Integration              |
+| Whisper API           | Voice Input Transcription                 |
+| Record                | Audio Recording                           |
+| Printing Package      | PDF Meal Plan Export                      |
 
-- Md. Mezbaul Islam Zion (MIZ), Lecturer, DIU
+---
 
-## Notes for Development
+## 👨‍💻 Development Team
 
-- This is a student project built for Android only
-- No authentication or Firebase is used; data is stored locally
-- API keys should be kept secure in a production environment
+| Name                     | ID            |
+|---------------------------|---------------|
+| Md Mobashir Hasan         | 221‑15‑5405   |
+| Md Mehedi Hasan Nayeem    | 221‑15‑5049   |
+| Tanvirul Islam            | 221‑15‑5386   |
+| Azmira Shekh              | 221‑15‑5569   |
+| Md. Jahid Hasan           | 221‑15‑5388   |
+
+---
+
+## 🧑‍🏫 Instructor
+
+**Md. Mezbaul Islam Zion (MIZ)**  
+Lecturer, Daffodil International University
+
+---
+
+## 📂 Project Resources
+
+| Resource                 | Link / Location                     |
+|---------------------------|-------------------------------------|
+| 📸 App Screenshots        | [https://drive.google.com/drive/folders/1w3XcXI4vGRqAldWyJHheLgIxmbOXx2lC?usp=sharing]     |
+| 🎬 Demo Video             | [https://drive.google.com/file/d/1jrTd853z9kf44e5Unitqcu_cyEe4J0aI/view?usp=sharing] |
+| 📄 Report Link            | [https://drive.google.com/file/d/1ETFPbFHTvxwbgmsNH08AuIZc5_T-78l5/view?usp=sharing]              |
+| 🔗 Release APK (Drive)    | [https://drive.google.com/file/d/1eDUDT7nRswrmiRH-KRWp5k7GWTO7E55N/view?usp=sharing]      |
+
+---
+
+## ⚠️ Notes
+
+- 🎯 This is a **student project** designed for **Android devices only**.
+- ☁️ Currently **no cloud-based database** — uses local storage.
+- 🔒 API keys are securely handled and **never hardcoded** in the repository.
+
+---
+
