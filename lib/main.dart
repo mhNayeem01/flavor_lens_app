@@ -6,6 +6,8 @@ import 'screens/planner.dart';
 import 'screens/profile.dart';
 import 'screens/about.dart';
 import 'screens/calorie_ai.dart';
+import 'screens/login.dart';
+import 'screens/signup.dart';
 import 'services/gemini_api.dart';
 import 'utils/app_theme.dart';
 import 'models/recipe.dart';
@@ -23,21 +25,47 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => AppState()),
         ChangeNotifierProvider(create: (context) => TabNavigationState()),
+        ChangeNotifierProvider(create: (context) => AuthState()),
       ],
-      child: MaterialApp(
-        title: 'FlavorLens',
-        theme: AppTheme.themeData,
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const SplashScreen(),
-          '/home': (context) => const MainNavigationScreen(initialIndex: 0),
-          '/planner': (context) => const MainNavigationScreen(initialIndex: 1),
-          '/calorie_ai':
-              (context) => const MainNavigationScreen(initialIndex: 2),
-          '/profile': (context) => const MainNavigationScreen(initialIndex: 3),
-          '/about': (context) => const AboutScreen(),
+      child: Consumer<AuthState>(
+        builder: (context, authState, child) {
+          return MaterialApp(
+            title: 'FlavorLens',
+            theme: AppTheme.themeData,
+            initialRoute: authState.isLoggedIn ? '/home' : '/login',
+            routes: {
+              '/': (context) => const SplashScreen(),
+              '/login': (context) => const LoginScreen(),
+              '/signup': (context) => const SignupScreen(),
+              '/home':
+                  (context) =>
+                      authState.isLoggedIn
+                          ? const MainNavigationScreen(initialIndex: 0)
+                          : const LoginRedirect(),
+              '/planner':
+                  (context) =>
+                      authState.isLoggedIn
+                          ? const MainNavigationScreen(initialIndex: 1)
+                          : const LoginRedirect(),
+              '/calorie_ai':
+                  (context) =>
+                      authState.isLoggedIn
+                          ? const MainNavigationScreen(initialIndex: 2)
+                          : const LoginRedirect(),
+              '/profile':
+                  (context) =>
+                      authState.isLoggedIn
+                          ? const MainNavigationScreen(initialIndex: 3)
+                          : const LoginRedirect(),
+              '/about':
+                  (context) =>
+                      authState.isLoggedIn
+                          ? const AboutScreen()
+                          : const LoginRedirect(),
+            },
+            debugShowCheckedModeBanner: false,
+          );
         },
-        debugShowCheckedModeBanner: false,
       ),
     );
   }
@@ -284,5 +312,46 @@ class TabNavigationState extends ChangeNotifier {
   void changeTab(int index) {
     _currentIndex = index;
     notifyListeners();
+  }
+}
+
+// Authentication state provider
+class AuthState extends ChangeNotifier {
+  bool _isLoggedIn = false;
+
+  bool get isLoggedIn => _isLoggedIn;
+
+  void login() {
+    _isLoggedIn = true;
+    notifyListeners();
+  }
+
+  void logout() {
+    _isLoggedIn = false;
+    notifyListeners();
+  }
+}
+
+// Redirect widget for unauthenticated access attempts
+class LoginRedirect extends StatefulWidget {
+  const LoginRedirect({super.key});
+
+  @override
+  State<LoginRedirect> createState() => _LoginRedirectState();
+}
+
+class _LoginRedirectState extends State<LoginRedirect> {
+  @override
+  void initState() {
+    super.initState();
+    // Redirect to login after frame is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Navigator.of(context).pushReplacementNamed('/login');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

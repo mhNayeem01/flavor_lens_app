@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
-                                    'FlavorLens User',
+                                    'Md Mobashir Hasan',
                                     style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
@@ -158,6 +158,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                             ),
                           ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 24),
+
+                      // Logout button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            Provider.of<AuthState>(
+                              context,
+                              listen: false,
+                            ).logout();
+                            Navigator.pushReplacementNamed(context, '/login');
+                          },
+                          icon: const Icon(Icons.logout),
+                          label: const Text(
+                            'Logout',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey[200],
+                            foregroundColor: Colors.black87,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
                         ),
                       ),
 
